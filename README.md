@@ -25,5 +25,6 @@ Memegen: used the [Memegen](https://memegen.link/) meme generator for writing au
   - **forgot.html:** this HTML page is still under development, but it will be the place where the user asks for receiving her/his password in the provided email.
   - **index.html:** main page of the webapp, that shows all the inserted movies, holds the filters to aid selecting the best choice, and shows specific details for each item when clicked. This page also allows the user to mark the items as watched, edit them or delete them.
   - **layout.html:** this is the base html code that all other pages refer to and that tells basic HTML information, like headers and reference to external files.
-  - **login.html:**
-  
+  - **login.html:** this is the page that is loaded when the user is not logged in, and it gives the user the opportunity to log in or register. It also explains basic webapp functionality, resources and tools used.
+  - **message.html:** this page manages the [Memegen](https://memegen.link/) meme generator, and returns a proper error mesage, whenever needed.
+  - **register.html:** this page is where each new user that wants to use this webapp can register and login later.
