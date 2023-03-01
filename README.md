@@ -3,7 +3,7 @@
 #### Description: Bookmovie is a lightweight and intuitive movie bookmarker, aimed to be used whenever need. Simple as that.
   
 ## Why was this webapp created?
-  This project was innitially conceived as [CS50's](https://cs50.harvard.edu/) course final project. And I decided to build a movie bookmarker because it is based on a simple issue I frequently deal with: what is my next movie or tv series I want to watch? There are three main reasons that supported this choice:
+  This project was initially conceived as [CS50's](https://cs50.harvard.edu/) course final project. And I decided to build a movie bookmarker because it is based on a simple issue I frequently deal with: what is my next movie or tv series I want to watch? There are three main reasons that supported this choice:
 1. Whenever a friend recommended a movie or tv show, I would write it somewhere, and by the time I had finally the availability to watch it, I just couldn't find it, wasting quite some time.
 2. I realized that there are two main factors that guides the decision of what to watch next: the current mood of the viewers and the available time they have. This process of deciding often takes quite some time as well. That's why this webapp has filters for Genres and Duration to aid selecting faster and more accuratelly what is really needed.
 3. I wanted a computer science project that would challenge myself and that I could showcase to others, as I am constantly improving my backend software engineering skills.
