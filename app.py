@@ -430,7 +430,7 @@ def forgot():
         return render_template("forgot.html")
 
 
-    @app.route("/settings", methods=["GET"])
+@app.route("/settings", methods=["GET"])
 def settings():
     return message("sorry, functionality not implemented yet")
 
