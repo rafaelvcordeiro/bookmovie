@@ -13,7 +13,7 @@
 + **SQLite3:** used sqlite3 as the database, and found the following implementation guidelines referenced [here](https://pythonbasics.org/flask-sqlite/) and [here](https://flask.palletsprojects.com/en/2.2.x/patterns/sqlite3/). This webapp uses two SQLite tables: USERS, that holds users data and RECORDS, that holds all data from each user.
 + **Cinemagoer API:** to make it easy to add new entries, the [Cinemagoer](https://cinemagoer.github.io/) IMDB API was used, to fill in the add items forms and improve usability.
 + **Skeleton:** used [Skeleton](http://getskeleton.com/) CSS framework to increase frontend development speed. The Skeleton project seems to be no longer active, but for the basic usage of this webapp where I wanted a minimalistic approach, it worked and suited my needs perfectly well.
-Memegen: used the [Memegen](https://memegen.link/) meme generator for writing automatic error messages and information.
++ **Memegen:** used the [Memegen](https://memegen.link/) meme generator for writing automatic error messages and information.
 
 ## Files description:
   - **aap.py:** main part of the webapp, that invokes all libraries, manages logged in users sessions and manages all Flask routes.
