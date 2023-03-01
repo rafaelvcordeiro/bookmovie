@@ -10,9 +10,6 @@ from datetime import datetime
 from extras import message, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
 
-raise FileNotFoundError(
-    errno.ENOENT, os.strerror(errno.ENOENT), filename)
-
 # References for using sqlite3 with python and flask
 # 1) https://pythonbasics.org/flask-sqlite/
 # 2) https://flask.palletsprojects.com/en/2.2.x/patterns/sqlite3/
@@ -439,4 +436,4 @@ def settings():
 
 
 if __name__ == '__app__':
-    app.run(debug=True, port=os.getenv("PORT", default=5000))
+    app.run(debug=False, port=os.getenv("PORT", default=5000))
