@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Bookmovie
+{% endblock %}
+
+{% block main %}
+
+<div class="row">
+    <div class="twelve columns" style="margin-top: 100px;">
+        <div style="text-align: center;">
+            <span><h2>Welcome!<h2>
+                <h6>Thanks for signing up. Write your info below and enjoy bookmarking movies.</h6></span><br>
+        </div>
+
+        <div class="twelve columns" style="text-align: center;">
+            <form action="/register" method="post">
+                <label for="username">Username</label><input type="text" autocomplete="off" autofocus minlength="3" maxlength="20" name="username" id="username" size="20"><br>
+                <label for="password">Password</label><input type="password" name="password" id="password" minlength="3" maxlength="20" size="20"><br>
+                <label for="confirmation">Repeat password</label><input type="password" name="confirmation" id="confirmation" minlength="3" maxlength="20" size="20"><br>
+                <label for="email">Email address</label><input type="text" name="email" id="email" minlength="3" maxlength="40" size="20"><br>
+                <button action="submit">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

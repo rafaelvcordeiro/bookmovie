@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>BookMovie: a movie bookmarker</title>
+  <meta name="description" content="I realized I spend quite some time trying to remember or decide what movie or tv series to watch, and also I use to forget recommendation 
+  from friends. I created this personal web page to aid organizing movies and tv shows to watch, like a personal food menu, applied in the audiovisual industry">
+  <meta name="author" content="Rafael Cordeiro">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="http://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="../static/css/normalize.css">
+  <link rel="stylesheet" href="../static/css/skeleton.css">
+  <link rel="stylesheet" href="../static/css/custom.css">
+
+
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="../static/images/favicon.png">
+
+  <title>{% block title %}{% endblock %}</title>
+
+</head>
+<body>
+
+
+
+  <!-- Primary Page Layout
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<div class="container">
+  
+  <!-- Navigation Menu
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <div>
+    {% if session["user_id"] %}
+    <ul>
+      <li><a href="/logout">logout</a></li>
+      <li><a href="/settings">settings</a></li>
+      <li><a href="/">home</a></li>
+    </ul>
+    {% else %}
+    <ul>
+      <li><a href="/register">register</a></li>
+      <li><a href="/login">login</a></li>
+    </ul>
+    {% endif %}
+  </div>
+
+  {% block main %} {% endblock %}
+
+</div>
+
+    <!-- Scripts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="../static/js/script.js"></script>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

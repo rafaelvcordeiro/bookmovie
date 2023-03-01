@@ -1,0 +1,136 @@
+
+{% extends "layout.html" %}
+{% block title %}
+    Add new entry
+{% endblock %}
+
+{% block main %}
+
+
+
+<!-- Form for updating data in the database
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<div class="row">
+  <div class="twelve columns" style="margin-top: 10px;">
+    <h2>Edit the movie data below</h2>
+  </div>
+</div>               
+<br>
+
+
+
+<form action="/edit" method="post">
+<div class="row">
+  <div class="six columns">
+    <div>
+      <h6>
+      <label for="textMovieTitle">Movie Title<span style="color: red; font-size: 3.0rem;"> *</span></label>
+      <input type="text" id="textMovieTitle" name="textMovieTitle"
+      autocomplete="off" placeholder="Movie Title" maxlength="36" size = "30" required value="{{ d[0]['Title'] }}">
+              
+
+      {% set recordGenresList = d[0]['Genres'].split(',') %}
+
+      <label>Genres <span style="color: red; font-size: 3.0rem;">*</span></label>
+      {% for genre in genresList %}
+        {% if genre in recordGenresList %}
+          <label for="cbGenre{{ genre }}"><input type="checkbox" id="cbGenre{{ genre }}" name="cbGenre" value="{{ genre }}" checked> {{ genre }}</label>
+        {% else %}
+          <label for="cbGenre{{ genre }}"><input type="checkbox" id="cbGenre{{ genre }}" name="cbGenre" value="{{ genre }}"> {{ genre }}</label>
+        {% endif %}      
+      {% endfor %}        
+      </h6>
+    </div>
+  </div>
+    
+  <!-- user_id,Genres,Title,Rating,Duration,Type,Platform,Trailer,Country,Writer,Cast,Poster,Watched,Plot,Comment,Year, recordDate -->
+  <div class="six columns">
+    <div><h6>       
+      <label for="selectMovieDuration">Movie Duration<span style="color: red; font-size: 3.0rem;">*</span></label>
+      <select name="selectMovieDuration" id="selectMovieDuration" required>
+        <option value="" disabled>--- Choose a movie duration ---</option>
+        <option {% if d[0]['Duration'] == 30 %} selected {% endif %} id="optionMovieDuration30" value="30"> 30 minutes</option>
+        <option {% if d[0]['Duration'] == 45 %} selected {% endif %} id="optionMovieDuration45" value="45"> 45 minutes</option>
+        <option {% if d[0]['Duration'] == 60 %} selected {% endif %} id="optionMovieDuration60" value="60"> 1 hour</option>
+        <option {% if d[0]['Duration'] == 90 %} selected {% endif %} id="optionMovieDuration90" value="90"> 1h30min</option>
+        <option {% if d[0]['Duration'] == 105 %} selected {% endif %} id="optionMovieDuration105" value="105"> 1h45min</option>
+        <option {% if d[0]['Duration'] == 120 %} selected {% endif %} id="optionMovieDuration120" value="120"> 2 hours</option>
+        <option {% if d[0]['Duration'] == 135 %} selected {% endif %} id="optionMovieDuration135" value="135"> 2h15min</option>
+        <option {% if d[0]['Duration'] == 150 %} selected {% endif %} id="optionMovieDuration150" value="150"> 2h30min+</option>
+      </select>
+
+      <label for="textMovieTrailer">Movie Trailer URL<span style="color: red; font-size: 3.0rem;"></span></label><input type="text" id="textMovieTrailer"
+      name="textMovieTrailer" autocomplete="off" placeholder="Youtube URLs only" maxlength="100" size = "30" value="{{ d[0]['Trailer'] }}"><br>
+
+      <label for="textMovieRating">IMDB Rating</label>
+      <input type="text" id="textMovieRating" name="textMovieRating"
+      autocomplete="off" placeholder="insert a number from 0.0 to 10.0" maxlength="28" size = "30" value="{{ d[0]['Rating'] }}">
+
+      <label for="textMovieCountry">Country</label><input type="text" id="textMovieCountry" name="textMovieCountry"
+        autocomplete="off" placeholder="Insert the country of origin" maxlength="28" size = "30" value="{{ d[0]['Country'] }}">
+        
+        <label for="textMovieYear">Year</label><input type="text" id="textMovieYear" name="textMovieYear"
+        autocomplete="off" placeholder="Insert the year it was made" maxlength="28" size = "30" value="{{ d[0]['Year'] }}">
+
+        <label for="textMovieWriter">Writers/Creators</label><input type="text" id="textMovieWriter" name="textMovieWriter"
+        autocomplete="off" placeholder="Director's name" maxlength="280" size = "30" value="{{ d[0]['Writer'] }}">
+
+        <label for="textMovieCast">Cast</label><input type="text" id="textMovieCast" name="textMovieCast"
+        autocomplete="off" placeholder="separate names by comma, wihout spaces" maxlength="1000" size = "30" value="{{ d[0]['Cast'] }}">
+
+        <label for="textMoviePoster">Image poster URL</label><input type="text" id="textMoviePoster" name="textMoviePoster"
+        autocomplete="off" placeholder="insert URL for poster's JPG" maxlength="200" size = "30" value="{{ d[0]['Poster'] }}">
+        <br><em>The ideal image URL address should be a JPG file in portrait mode, with 350 x 280 pixels.</em><br>
+
+        <label for="selectMovieType">Type<span style="color: red; font-size: 3.0rem;"></span></label>
+        <select name="selectMovieType" id="selectMovieType">
+          <option value="" selected="off" disabled>--- Choose Type ---</option>
+          <option {% if d[0]['Type'] =='tv series' %} selected {% endif %} id="optionMovieTypeTvseries" value="tv series"> TV Series</option>
+          <option {% if d[0]['Type'] =='movie' %} selected {% endif %} id="optionMovieTypeMovie" value="movie"> Movie</option>
+        </select>
+
+        <label for="selectMoviePlatform">Where to watch<span style="color: red; font-size: 3.0rem;"></span></label>
+      <select name="selectMoviePlatform" id="selectMoviePlatform" >
+        <option {% if d[0]['Platform'] =='' %} selected {% endif %} value=""> I don't know yet</option>
+        <option {% if d[0]['Platform'] =='Netflix' %} selected {% endif %} value="Netflix"> Netflix</option>
+        <option {% if d[0]['Platform'] =='Amazon' %} selected {% endif %} value="Amazon"> Amazon</option>
+        <option {% if d[0]['Platform'] =='Appletv' %} selected {% endif %} value="Appletv"> Apple TV</option>
+        <option {% if d[0]['Platform'] =='Starsplus' %} selected {% endif %} value="Starsplus"> Stars +</option>
+        <option {% if d[0]['Platform'] =='Hbomax' %} selected {% endif %} value="Hbomax"> HBO Max</option>
+        <option {% if d[0]['Platform'] =='Paramount' %} selected {% endif %} value="Paramount"> Paramount+</option>
+        <option {% if d[0]['Platform'] =='Disney' %} selected {% endif %} value="Disney"> Disney+</option>
+        <option {% if d[0]['Platform'] =='Mubi' %} selected {% endif %} value="Mubi"> Mubi</option>
+        <option {% if d[0]['Platform'] =='Googleplay' %} selected {% endif %} value="Googleplay"> Google Play</option>
+      </select>
+
+        <label>Watched</label>
+        <label for="cbWatched"><input type="checkbox" id="cbWatched" name="cbWatched" {% if d[0]['Watched'] =='yes' %} checked="true" {% endif %}> Watched</label>
+      </h6>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="twelve columns">
+    <div>
+      <h6><label for="textMoviePlot">Plot</label>
+      <textarea name="textMoviePlot" id="textMoviePlot" class="textarea-edit">{{ d[0]['Plot'] }}</textarea>
+      </h6>
+    </div>
+    <div>
+      <h6><label for="textMovieComment">Comment</label>
+      <textarea name="textMovieComment" id="textMovieComment" class="textarea-edit">{{ d[0]['Comment'] }}</textarea>
+      </h6>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="twelve columns">
+    <input type="hidden" name="recordId" value="{{ d[0]['id'] }}">
+    <button name="buttonSaveData" id="buttonSaveData" type="submit">Save Data</button>
+    <input type="button" name="buttonCancel" id="buttonCancel" value="Cancel" onclick="window.location.href='/';">
+  </div>
+</div>
+
+</form>
+
+    {% endblock %}

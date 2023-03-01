@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Bookmovie
+{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="twelve columns">
+        <div style="text-align: center;">
+            <span><h2>Bookmovie<h5>A bookmark, for movies</h5></h2></span>
+         </div>
+        <div style="text-align: left;">
+            <h6>If you want just to understand how this <em>webapp</em> works, you can use the special guest credentials below.
+            You are always welcome to register and use it your way, though.</h6>
+        
+        
+            <strong>username: </strong><em>guest</em><br>
+            <strong>password: </strong><em>123</em>
+        </div>
+    </div>
+    <br>
+</div>
+<div class="row">
+    <div class="twelve columns" style="text-align: center;">
+        <form action="/login" method="post">
+            <label for="username">Username</label><input type="text" autocomplete="off" autofocus minlength="3" maxlength="20" name="username" id="username" size="20"><br>
+            <label for="password">Password</label><input type="password" name="password" id="password" minlength="3" maxlength="20" size="20"><br>
+            <button action="submit">Login</button>
+        </form>
+        <a href="/forgot">Forgot your password?</a>
+    </div>
+
+</div>
+<hr>
+<div class="row">
+    <div class="twelve columns">
+        <h4>Why was this webapp created?</h4>
+        <h5>There are three main reasons:</h5>
+        <h6>
+        <p><strong>1. </strong>Whenever a friend recommended a movie or tv show, I would write it somewhere, and by the time I had finally the availability to watch it,
+            I just couldn't find it, wasting quite some time.</p>
+        <p><strong>2. </strong>I realized that there are two main factors that guides the decision of what to watch next:
+            the current mood of the viewers and the available time they have. This process of deciding often takes quite some time as well. 
+            That's why this webapp has filters for Genres and Duration to aid selecting faster and more accuratelly what is really needed.</p>
+        <p><strong>3. </strong>I wanted a computer science project that would challenge myself and that I could showcase to others, 
+            as I am constantly improving my backend software engineering skills.</p>
+        </h6>
+    </div>      
+</div>
+
+<hr>
+<div class="row">
+    <div class="twelve columns">
+        <h4>Tools and resources used:</h4>
+        <h5></h5>
+        <h6>
+        <strong>Flask: </strong>the used backend framework is <a href="https://flask.palletsprojects.com/en/2.2.x/" target=_blank">Flask</a>, as it is simple to implement, reliable and light.<br>
+        <strong>SQLite3: </strong>this webapp uses two <a href="https://flask.palletsprojects.com/en/2.2.x/patterns/sqlite3/" target=_blank">SQLite</a> tables: USERS, that holds users data and RECORDS, that holds all data from each user.<br>
+        <strong>Cinemagoer API: </strong>to make it easy to add new entries, the <a href="https://cinemagoer.github.io/" target="_blank">Cinemagoer</a> IMDB API was used, to fill in the add items forms and improve usability.<br>
+        <strong>Skeleton: </strong>used <a href="http://getskeleton.com" target="_blank">Skeleton</a> CSS framework to increase frontend development and design.<br>
+        <strong>Memegen: </strong>used the <a href="https://memegen.link/" target="_blank">Memegen</a> meme generator for writing automatic error messages and information.
+        </h6>
+    </div>      
+</div>
+
+{% endblock %}

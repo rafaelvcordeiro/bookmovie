@@ -1,0 +1,199 @@
+
+{% extends "layout.html" %}
+{% block title %}
+    Bookmovie
+{% endblock %}
+
+{% block main %}
+
+
+    <!-- Page Header
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="row">
+    <div class="twelve column" style="text-align: center;">
+      <h1>Choose your choice</h1>
+    </div>
+    <div style="margin-top: 0%; margin-bottom: 30px;" class="right">
+      <a href="/add"><img src="../static/images/add.png" style="width: 180px;"></a>
+     </div>
+  </div>
+
+
+<!-- Movie / TV shows Details Page -->
+<div class="row">
+  <div class="twelve columns">
+    <div id="details-page" class="desligado">
+      <div class="row">
+        <div class="three columns">
+          <div>
+            <img id="dPoster" class="img" src="" style="max-width: 240px;">
+          </div>
+        </div>
+        <div class="nine columns">
+          <div class="row">
+            <div class="six columns">
+              <h6>
+              <strong>Title: </strong><span id="dTitle"></span><br>
+              <strong>Watched: </strong><span id="dWatched"></span><br>
+              <strong>Type: </strong><span id="dType"></span><br>
+              <strong>Duration: </strong><span id="dDuration"></span> minutes<br>
+              <strong>IMDB Rating: </strong><span id="dRating"></span>/10<br>
+              </h6>
+            </div>
+            <div class="six columns">
+              <h6>
+              <strong>Countries: </strong><span id="dCountry"></span><br>
+              <strong>Year: </strong><span id="dYear"></span><br>
+              <strong>Platform: </strong><span id="dPlatform"></span><br>
+              <strong>Genres: </strong><span id="dGenres"></span><br>
+              <strong>Writers/Creators: </strong><span id="dWriter"></span><br>
+              </h6>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="twelve columns">
+              <h6>     
+              <strong>Plot: </strong><span id="dPlot"></span><br>
+              <strong>Comment: </strong><span id="dComment"></span><br>
+              <div style ="max-height:46px; overflow: hidden;">
+                <strong>Cast: </strong><span id="dCast"></span><br>
+              </div> 
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div id="divTrailer" class="desligado">
+          <div class="twelve column">
+              <iframe id="dTrailer" width="400" height="270" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom: 50px; margin-top: 20px">
+        <div style="text-align: center;">
+          <form style="display: inline-block;" action="/watched" method = "post"><input type="hidden" name="recordIdWatched" id="recordIdWatched" value ="">
+            <button type="submit">Watched</button>
+          </form>
+          <form style="display: inline-block;" action="/edit" method = "get"><input type="hidden" name="recordIdEdit" id="recordIdEdit" value ="">
+            <button type="submit">Edit</button>
+          </form>
+          <form style="display: inline-block;" action="/delete" method = "post"><input type="hidden" name="recordIdDelete" id="recordIdDelete" value ="">
+            <button type="submit">Delete</button>
+          </form>
+          <button type="button" name="buttonClose" value="buttonClose" onclick="detailsExpand()">Close</button><hr>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Filters for genre and duration -->
+<div class="row" style="margin-top: 10px;">
+  <div class="two columns" id ="divCheckboxGenres" onclick="expandOtherDiv(this)">
+    <h5>Genres:<span><h6><em>(click to expand)</em></h6></span></h5>
+  </div>
+  <div class="ten columns">
+    <div id ="divCheckboxGenresTarget" class="expandOtherDivOff">
+    <h6>
+    {% for genre in genresList %}
+      <span style="display:inline-block;">
+        <label style="font-weight: 300; font-size: smaller;" for="cbGenre{{ genre }}">
+          <input type="checkbox" id="cbGenre{{ genre }}" name="cbGenre" value="{{ genre }}"> {{ genre }}&nbsp;&nbsp;
+        </label>
+      </span>
+    {% endfor %}
+    </h6>
+    </div>
+  </div>
+</div>
+
+<div class="row" style="margin-top: 10px;">
+  <div class="two columns" id ="divCheckboxDuration" onclick="expandOtherDiv(this)">
+    <h5>Duration:<span><h6><em>(click to expand)</em></h6></span></h5>
+  </div>
+  <div class="ten columns">
+    <div id ="divCheckboxDurationTarget" class="expandOtherDivOff">
+    <h6>
+      <span style="display:inline-block;"><label style="font-weight: 300; font-size: smaller;" for="cbDuration30"><input type="checkbox" id="cbDuration30" name="cbDuration" value="30"> 30 min &nbsp;&nbsp;</label></span>
+      <span style="display:inline-block;"><label style="font-weight: 300; font-size: smaller;" for="cbDuration45"><input type="checkbox" id="cbDuration45" name="cbDuration" value="45"> 45 min &nbsp;&nbsp;</label></span>
+      <span style="display:inline-block;"><label style="font-weight: 300; font-size: smaller;" for="cbDuration60"><input type="checkbox" id="cbDuration60" name="cbDuration" value="60"> 1 hour &nbsp;&nbsp;</label></span>
+      <span style="display:inline-block;"><label style="font-weight: 300; font-size: smaller;" for="cbDuration90"><input type="checkbox" id="cbDuration90" name="cbDuration" alue="90"> 1h30min &nbsp;&nbsp;</label></span>
+      <span style="display:inline-block;"><label style="font-weight: 300; font-size: smaller;" for="cbDuration105"><input type="checkbox" id="cbDuration105" name="cbDuration" value="105"> 1h45min &nbsp;&nbsp;</label></span>
+      <span style="display:inline-block;"><label style="font-weight: 300; font-size: smaller;" for="cbDuration120"><input type="checkbox" id="cbDuration120" name="cbDuration" value="120"> 2 hours &nbsp;&nbsp;</label></span>
+      <span style="display:inline-block;"><label style="font-weight: 300; font-size: smaller;" for="cbDuration135"><input type="checkbox" id="cbDuration135" name="cbDuration" value="135"> 2h15min &nbsp;&nbsp;</label></span>
+      <span style="display:inline-block;"><label style="font-weight: 300; font-size: smaller;" for="cbDuration150"><input type="checkbox" id="cbDuration150" name="cbDuration" value="150"> 2h30min &nbsp;&nbsp;</label></span>
+    
+    </h6>
+    </div>
+  </div>
+</div> 
+  
+<!-- not watched items start -->
+<div class="row">
+  <div class="twelve columns items">
+    
+    {% for d in movieData %}
+      {% if d['Watched'] == "no" %}
+        <!-- not watched item start -->
+        <!--record_id,user_id,Genres,Title,Rating,Duration,Type,Platform,Trailer,Country,Writer,Cast,Poster,Watched,Plot,Comment,Year-->
+        <div class="item" id="movieData{{ d['id'] }}" dId = "{{ d['id'] }}" dGenres="{{ d['Genres'] }}" dTitle="{{ d['Title'] }}" dRating="{{ d['Rating'] }}" dDuration="{{ d['Duration'] }}" dType="{{ d['Type'] }}" dPlatform="{{ d['Platform'] }}"
+        dTrailer="{{ d['Trailer'] }}" dCountry="{{ d['Country'] }}" dWriter="{{ d['Writer'] }}" dCast="{{ d['Cast'] }}" 
+        dPoster= {% if d['Poster'] == '' %} '../static/images/no_image.png' {% else %} "{{ d['Poster'] }}" {% endif %} dWatched="{{ d['Watched'] }}"
+        dPlot="{{ d['Plot'] }}" dComment="{{ d['Comment'] }}" dYear="{{ d['Year'] }}" style="text-align: center;" onclick="showDetails(this)">
+          <div class="row item-poster">
+            <img src={% if d['Poster'] == '' %} '../static/images/no_image.png' {% else %} "{{ d['Poster'] }}" {% endif %} style="height: 220px; width: auto;">
+          </div>
+          <div class="row item-title" >
+            <span>{{ d['Title'] }}</span>
+          </div>
+        </div>
+        <!-- not watched item end -->
+      {% endif %}
+    {% endfor %}
+
+  </div>
+</div>
+<!-- not watched items end -->
+
+<br>
+<!-- Division for holding only already watched items -->
+<div class="row" style="margin-top: 10px;">
+  <div class="two columns" id ="divCheckboxGenres" >
+    <h5>Watched:</h5>
+  </div>
+</div>
+
+<!-- watched items start -->
+<div class="row">
+  <div class="twelve columns items">
+    
+    {% for d in movieData %}
+      {% if d['Watched'] == "yes" %}
+        <!-- watched item start -->
+        <!--record_id,user_id,Genres,Title,Rating,Duration,Type,Platform,Trailer,Country,Writer,Cast,Poster,Watched,Plot,Comment,Year-->
+        <div class="item" id="movieData{{ d['id'] }}" dId = "{{ d['id'] }}" dGenres="{{ d['Genres'] }}" dTitle="{{ d['Title'] }}" dRating="{{ d['Rating'] }}" dDuration="{{ d['Duration'] }}" dType="{{ d['Type'] }}" dPlatform="{{ d['Platform'] }}"
+      dTrailer="{{ d['Trailer'] }}" dCountry="{{ d['Country'] }}" dWriter="{{ d['Writer'] }}" dCast="{{ d['Cast'] }}" 
+      dPoster= {% if d['Poster'] == '' %} '../static/images/no_image.png' {% else %} "{{ d['Poster'] }}" {% endif %} dWatched="{{ d['Watched'] }}"
+      dPlot="{{ d['Plot'] }}" dComment="{{ d['Comment'] }}" dYear="{{ d['Year'] }}" style="text-align: center;" onclick="showDetails(this)">
+        <div class="row item-watched-poster">
+          <img src={% if d['Poster'] == '' %} '../static/images/no_image.png' {% else %} "{{ d['Poster'] }}" {% endif %} style="height: 220px; width: auto;">
+        </div>
+        <div class="row item-title" >
+          <span>{{ d['Title'] }}</span>
+        </div>
+      </div>
+        <!-- watched item end -->
+      {% endif %}
+    {% endfor %}
+
+  </div>
+</div>
+<!-- watched items end -->
+
+{% endblock %}
+

@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Bookmovie
+{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="twelve columns" style="margin-top: 100px;">
+        <div style="text-align: center;">
+            <span><h2>Forgot your password?<h2> <br>
+                <h6>Type in the email address you registered, and your password will be sent to you.</h6></span>
+        </div>
+
+        <div class="twelve columns" style="text-align: center;">
+
+            <form action="/forgot" method="post">
+                <label for="email">Insert your registered email</label><input type="text" autocomplete="off" name="email" id="email"><br>
+                <button action="submit">Send</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+    
+
+
+
+
+{% endblock %}

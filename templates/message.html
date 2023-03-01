@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <!-- https://memegen.link/ -->
+    <img alt="{{ top }}" class="border img-fluid" src="http://memegen.link/custom/{{ top | urlencode }}/{{ bottom | urlencode }}.jpg?alt=https://cdn.vox-cdn.com/thumbor/cg2tkamh4kdVJPiL4h0fPnEZqSU=/0x0:3000x2000/1200x800/filters:focal(1260x760:1740x1240)/cdn.vox-cdn.com/uploads/chorus_image/image/65297999/eb3f2b9d9380e0c6040b2012807d05cd07d9ec6b15edbeca6d1535df1adc63421c7a4966001b305b5b511b25a387dd13.0.jpg&width=300" title="{{ top }}">
+{% endblock %}

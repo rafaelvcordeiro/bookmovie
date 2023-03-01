@@ -1,0 +1,211 @@
+
+{% extends "layout.html" %}
+{% block title %}
+    Add new entry
+{% endblock %}
+
+{% block main %}
+
+
+<!-- Movie data automatic search -->
+<div class="row" style="margin-top: 20px;">
+  <div class="eight columns">
+    <h2><span>Search <h6>You can retrieve automatic information by searching here.</h6></span></h2>
+  </div>
+  <div class="four columns">
+    <form action="/add" method ="post">
+      <span>
+      <input type="text" autocomplete="off" id="textSearchIMDB" name="textSearchIMDB" placeholder="Movie title" autofocus size="18">
+      <button name="buttonSearchIMDB" type="submit" style="padding: 0 10px;">Search</button></span>
+    </form>                  
+  </div>
+</div>
+
+
+<!-- Movie data display after search -->
+<div class="row" style="max-height: auto;">
+  <div class="eight columns {{ movieInfoState }}">
+      <h6>
+      <strong>Title:</strong><span id="searchLabelMovieTitle" form-data="{{ dictData.movieTitle }}"> {{ dictData.movieTitle }}</span><br>
+      <strong>Type:</strong><span id="searchLabelMovieType" form-data="{{ dictData.kind }}"> {{ dictData.kind }}</span><br>
+      <strong>Duration:</strong><span id="searchLabelMovieDuration" form-data="{{ dictData.duration[0] }}"> {% if dictData.duration[0]  %} {{ dictData.duration[0] }} minutes {% endif %}</span><br>
+      <strong>Rating:</strong><span id="searchLabelMovieRating" form-data="{{ dictData.rating }}">{% if dictData.rating %} {{ dictData.rating }} / 10 {% endif %}</span><br>   
+      <strong>Genres:</strong><span id="searchLabelMovieGenres" form-data="{% for genre in dictData.genres %} {{ genre }} {% endfor %}"> {% for genre in dictData.genres %} {{ genre }} {% endfor %}</span><br>
+      <strong>Countries:</strong><span id="searchLabelMovieCountry" form-data="{% for country in dictData.countries %} {{ country }}, {% endfor %}"> {% for country in dictData.countries %} {{ country }}, {% endfor %} </span><br>         
+      <strong>Year:</strong><span id="searchLabelMovieYear" form-data="{{ dictData.year }}"> {{ dictData.year }}</span><br>
+      <strong>Plot:</strong><span id="searchLabelMoviePlot" form-data="{{ dictData.plot[0] }}"> {{ dictData.plot[0] }}</span><br>    
+      <span id="searchLabelMovieWriter" form-data="{% for writer in dictData.writer %} {{ writer['name'] }}, {% endfor %}"></span>
+      <span id="searchLabelMovieCast"  form-data='{% for cast in dictData.cast %} {{ cast["name"] }}, {% endfor %}'></span>
+      </h6>
+  </div>
+  <div class="four columns {{ movieInfoState }}">
+    <img id="searchLabelImageurl" form-data="{{ dictData.imageurl }}" src="{{ dictData.imageurl }}" style="display:block; width:150px;"> <br>
+
+  </div>
+</div>
+<div class="row {{ movieInfoState }}" style="text-align: center;">
+  <input type="button" class="button-primary" value="Copy Data" name="buttonCopyData" onclick="copyValueToForm()">
+</div>
+<hr>
+
+
+<!-- Form for updating and writing data to database
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<div class="row">
+<div class="twelve columns" style="margin-top: 0px;">
+  <h2>Insert movie data</h2>
+  <h6>The items marked with a red asterisk are required.</h6>
+</div>
+</div>               
+<br>
+
+<form action="/write" method="post">
+<div class="row">
+  <div class="six columns">
+    <div>
+      <h6>
+      <!-- Movie Title -->
+      <label for="textMovieTitle">Movie Title<span style="color: red; font-size: 3.0rem;"> *</span></label>
+      <input type="text" id="textMovieTitle" name="textMovieTitle"
+      autocomplete="off" placeholder="Movie Title" maxlength="36" size = "30" required>
+
+      <!-- Movie Duration -->
+      <label for="selectMovieDuration">Movie Duration<span style="color: red; font-size: 3.0rem;">*</span></label>
+      <select name="selectMovieDuration" id="selectMovieDuration" required>
+        <option value="" selected disabled>--- Choose a movie duration ---</option>
+        <option id="optionMovieDuration30" value="30"> 30 minutes</option>
+        <option id="optionMovieDuration45"value="45"> 45 minutes</option>
+        <option id="optionMovieDuration60"value="60"> 1 hour</option>
+        <option id="optionMovieDuration90"value="90"> 1h30min</option>
+        <option id="optionMovieDuration105"value="105"> 1h45min</option>
+        <option id="optionMovieDuration120"value="120"> 2 hours</option>
+        <option id="optionMovieDuration135"value="135"> 2h15min</option>
+        <option id="optionMovieDuration150"value="150"> 2h30min+</option>
+      </select>
+      
+      <!-- Movie Genres -->
+      {% block javascript %}
+      <script>
+      let genreList = {{ genresList|tojson|safe }};
+      let genreMovie = {{ dictData.genres|tojson|safe }};
+      </script>
+      {% endblock %}
+      
+      <div id ="divCheckboxGenre" onclick="hideOtherDiv(this)"><label >Genres <em><span style="font-weight: 400;">(click to expand)</span></em>
+        <span style="color: red; font-size: 3.0rem;">*</span></label></div>
+      {% for i in range(0,10) %}
+      <span style="display: inline-block"><label for="cbGenre{{ genresList[i] }}">
+        <input type="checkbox" id="cbGenre{{ genresList[i] }}" name="cbGenre" value="{{ genresList[i] }}"> {{ genresList[i] }}&nbsp;&nbsp;</label></span>
+      {% endfor %}
+      <span style="display: none" id ="divCheckboxGenreTarget">
+      {% for i in range(10,genresList|length) %}
+      <span style="display: inline-block"><label for="cbGenre{{ genresList[i] }}">
+        <input type="checkbox" id="cbGenre{{ genresList[i] }}" name="cbGenre" value="{{ genresList[i] }}"> {{ genresList[i] }}&nbsp;&nbsp;</label></span>
+      
+      {% endfor %}      
+      </span>   
+
+      </h6>
+    </div>
+  </div>
+          
+  <div class="six columns">
+    <div><h6>
+      <!-- Movie Trailer -->
+      <label for="textMovieTrailer">Movie Trailer URL<span style="color: red; font-size: 3.0rem;"></span></label><input type="text" id="textMovieTrailer"
+      name="textMovieTrailer" autocomplete="off" placeholder="Youtube URLs only" maxlength="100" size = "30"><br>
+
+      <!-- Movie Rating -->
+      <label for="textMovieRating">IMDB Rating</label>
+      <input type="text" id="textMovieRating" name="textMovieRating"
+      autocomplete="off" placeholder="insert a number from 0.0 to 10.0" maxlength="28" size = "30">
+
+      <!-- Movie Watched -->
+      <label>Watched</label>
+      <label for="cbWatched"><input type="checkbox" id="cbWatched" name="cbWatched" > Watched</label>
+      </h6>
+    </div>
+  </div>
+</div>
+    
+<div class="row"style="text-align: center;" id ="aditionalInfo" onclick="hideOtherDiv(this)">
+  <em>-- If you want to add more information , click here to expand --</em>
+</div>
+
+<div class="row" id="aditionalInfoTarget" style="display: none;">
+  <div class="six columns">
+    <h6>
+      <!-- Movie Country -->
+      <label for="textMovieCountry">Country</label><input type="text" id="textMovieCountry" name="textMovieCountry"
+        autocomplete="off" placeholder="Insert the country of origin" maxlength="28" size = "30">
+        
+      <!-- Movie Year -->
+        <label for="textMovieYear">Year</label><input type="text" id="textMovieYear" name="textMovieYear"
+      autocomplete="off" placeholder="Insert the year it was made" maxlength="28" size = "30">
+
+      <!-- Movie Writer -->
+      <label for="textMovieWriter">Writers/Creators</label><input type="text" id="textMovieWriter" name="textMovieWriter"
+      autocomplete="off" placeholder="Director's name" maxlength="280" size = "30">
+
+      <!-- Movie Cast -->
+      <label for="textMovieCast">Cast</label><input type="text" id="textMovieCast" name="textMovieCast"
+      autocomplete="off" placeholder="separate names by comma, wihout spaces" maxlength="1000" size = "30">
+      </h6>
+  </div>
+
+  <div class="six columns">
+      <h6>
+      <!-- Movie Platform -->
+      <label for="selectMoviePlatform">Platform<span style="color: red; font-size: 3.0rem;"></span></label>
+      <select name="selectMoviePlatform" id="selectMoviePlatform">
+        <option value="" selected>-------- I don't know yet --------</option>
+        <option value="Netflix"> Netflix</option>
+        <option value="Amazon"> Amazon</option>
+        <option value="Appletv"> Apple TV</option>
+        <option value="Starsplus"> Stars +</option>
+        <option value="Hbomax"> HBO Max</option>
+        <option value="Paramount"> Paramount+</option>
+        <option value="Disney"> Disney+</option>
+        <option value="Mubi"> Mubi</option>
+        <option value="Googleplay"> Google Play</option>
+      </select>
+
+      <!-- Movie Type -->         
+      <label for="selectMovieType">Type<span style="color: red; font-size: 3.0rem;"></span></label>
+      <select name="selectMovieType" id="selectMovieType">
+        <option value="" selected="off" disabled>--------- Choose Type ---------</option>
+        <option id="optionMovieTypeTvseries" value="tv series"> TV Series</option>
+        <option id="optionMovieTypeMovie" value="movie"> Movie</option>
+      </select>
+
+      <!-- Movie Poster -->
+      <label for="textMoviePoster">Image poster URL</label><input type="text" id="textMoviePoster" name="textMoviePoster"
+      autocomplete="off" placeholder="insert URL for poster's JPG" maxlength="200" size = "30">
+      <br><em>The ideal image URL address should be a JPG file in portrait mode, aspect ratio 1:1.48, minimum 280 x 415 pixels.</em><br>
+      </h6>
+  </div>
+
+  <div id="aditionalInfoTarget"><h6><label for="textMoviePlot">Plot</label>
+    <textarea name="textMoviePlot" id="textMoviePlot" class="textarea-edit">Brief Description on what's this movie/tv series is about.</textarea>
+  </h6>
+  </div>
+</div>
+
+<div class="row">
+  <div class="twelve columns">
+    <div>
+      <h6><label for="textMovieComment">Comment</label>
+      <textarea name="textMovieComment" id="textMovieComment" class="textarea-edit">Try to answer why should you watch it and expend your precious time of life with it.</textarea>
+      </h6>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="twelve columns">
+    <button name="buttonSaveData" id="buttonSaveData" type="submit">Save Data</button>
+    <input type="button" name="buttonCancel" id="buttonCancel" value="Cancel" onclick="window.location.href='/';">
+  </div>
+</div>
+</form>
+
+    {% endblock %}
