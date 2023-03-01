@@ -1,7 +1,6 @@
 # bookmovie
 #### Video Demo:  <URL HERE>
-#### Description:
-Bookmovie is a lightweight and intuitive movie bookmarker, aimed to be used whenever need. Simple as that.
+#### Description: Bookmovie is a lightweight and intuitive movie bookmarker, aimed to be used whenever need. Simple as that.
   
 ## Why was this webapp created?
   This project was innitially conceived as [CS50's](https://cs50.harvard.edu/) course final project. And I decided to build a movie bookmarker because it is based on a simple issue I frequently deal with: what is my next movie or tv series I want to watch? There are three main reasons that supported this choice:
