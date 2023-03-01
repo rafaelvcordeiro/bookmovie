@@ -429,6 +429,11 @@ def forgot():
     else:
         return render_template("forgot.html")
 
-@app.route("/settings", methods=["GET"])
+
+    @app.route("/settings", methods=["GET"])
 def settings():
     return message("sorry, functionality not implemented yet")
+
+
+if __name__ == '__app__':
+    app.run(debug=True, port=os.getenv("PORT", default=5000))
