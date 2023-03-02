@@ -3,6 +3,7 @@ from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 import requests
 import json
+import Cinemagoer
 from imdb import Cinemagoer, helpers
 import sqlite3
 from flask import g
