@@ -3,7 +3,6 @@ from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 import requests
 import json
-import imdb
 from imdb import Cinemagoer, helpers
 import sqlite3
 from flask import g
@@ -23,6 +22,8 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+genresList = ["Action","Comedy","Drama","Nonsense","Romance","Sci-Fi","History","Fantasy","Adventure","Crime","Family","Mystery","Music","Documentary",\
+              "Animation","Biography","Film-Noir","Horror","Musical","Short-Film","Sport","Superhero","Thriller","War","Western"]
 
 @app.after_request
 def after_request(response):
@@ -34,9 +35,7 @@ def after_request(response):
     return response
 
 
-genresList = ["Action","Comedy","Drama","Nonsense","Romance","Sci-Fi","History","Fantasy","Adventure","Crime","Family","Mystery","Music","Documentary",\
-              "Animation","Biography","Film-Noir","Horror","Musical","Short-Film","Sport","Superhero","Thriller","War","Western"]
-
+# Homepage route
 @app.route("/")
 @login_required
 def index():
@@ -51,13 +50,14 @@ def index():
     username = cursor.fetchall()
     return render_template("index.html", movieData=movieData, genresList=genresList, username=username)
 
-
+# Edit records route
 @app.route("/edit", methods = ["GET", "POST"])
 @login_required
 def edit():
     user_id = session["user_id"]
     if request.method == "POST":
-        
+
+        # If method is POST, get form data
         recordId = request.form.get("recordId")
         print("this is the current record being edited: ", recordId)
         GenresList = request.form.getlist("cbGenre")
@@ -94,6 +94,7 @@ def edit():
             youtubeId = Trailer[32:]
             Trailer = urlTrailer2 + youtubeId
 
+        # Connect with database and update all items
         with sqlite3.connect("bookmovie.db") as db:
             cursor = db.cursor()
         cursor.execute("UPDATE records SET genres = ?,title = ?,rating = ?,duration = ?,type = ?,\
@@ -109,6 +110,7 @@ def edit():
         recordId = request.args.get("recordIdEdit")
         print("the ID of the current record is: ",recordId)
 
+        # returns current selected item data and display it in the forms of the html page
         connect = sqlite3.connect("bookmovie.db")
         connect.row_factory = sqlite3.Row
         cursor = connect.cursor()
@@ -118,6 +120,7 @@ def edit():
         return render_template("edit.html",d=recordData, genresList=genresList, user_id=user_id)
     
 
+# Route to be executed when Watched button is pressed
 @app.route("/watched", methods=["POST"])
 @login_required
 def watched():
@@ -125,25 +128,29 @@ def watched():
     recordId = request.form.get("recordIdWatched")
     print("this is the current record being edited: ", recordId)
 
-  
+    
     with sqlite3.connect("bookmovie.db") as db:
         cursor = db.cursor()
     
+    # Read current state in the database
     cursor.execute("SELECT watched FROM records WHERE id = ? AND user_id = ?", (recordId,user_id))
     recordData = cursor.fetchall()
 
+    # If is already "yes", make it to be "no"
     Watched = recordData[0][0]
     if Watched == 'yes':
         Watched = 'no'
     elif Watched == 'no':
         Watched = 'yes'
 
+    # Update database with the change
     cursor.execute("UPDATE records SET watched = ? WHERE id = ? AND user_id = ?;",(Watched,recordId, user_id))
     db.commit()
         
     return redirect("/")    
 
 
+# Route to be executed when delete button is pressed, removing selected item from database
 @app.route("/delete", methods=["POST"])
 @login_required
 def delete():
@@ -159,6 +166,7 @@ def delete():
     return redirect("/")    
 
 
+# After the data forms in add.html are filled in, this route will save the new record to the database
 @app.route("/write", methods=["POST"])
 @login_required
 def write():
@@ -213,6 +221,7 @@ def write():
     return redirect("/")
 
 
+# This route manages the add.html page, and is responsible for doing the IMDB search and presenting the results
 @app.route("/add", methods=["GET", "POST"])
 @login_required
 def add():
@@ -222,14 +231,14 @@ def add():
        
 
     if request.method == "POST":
-        #CINEMAGOER API, easier and simpler, but i found it to be a litle slow to retrieve data.
+        # Renders the first search result made in IMDB database via CINEMAGOER
         title = request.form.get("textSearchIMDB")
         movieSearch = ia.search_movie(title)
         movie_id = movieSearch[0].movieID
         movie = ia.get_movie(movie_id)
-
-        #get 20 casts first names in a single string object
         
+        # All these next variables use try and except because depending on the CINEMAGOER API,
+        # it may result in an error, and we don't want it to stop the web application.
         try:
             dictData["cast"] = movie.data["cast"]
         except(IndexError, KeyError, AttributeError, NameError):
@@ -285,9 +294,7 @@ def add():
             dictData["year"] = movie.data["year"]
         except(IndexError, KeyError, AttributeError, NameError):
             dictData["year"] = ""
-        
-        
-                   
+                         
         return render_template("add.html", dictData=dictData, genresList=genresList, movieInfoState="ligado")
     else:
         dictData["cast"]=""
@@ -304,6 +311,7 @@ def add():
         return render_template("add.html", dictData=dictData, genresList=genresList, movieInfoState="desligado")
     
 
+# Route to manage the login.html page
 @app.route("/login", methods=["GET", "POST"])
 def login():
     #Log user in
@@ -351,6 +359,7 @@ def login():
         return render_template("login.html")
 
 
+# Route for user logout. This is the same as used in CS50's Problem Set Finance
 @app.route("/logout")
 def logout():
     #Log user out
@@ -362,6 +371,7 @@ def logout():
     return redirect("/")
 
 
+# Route that manages register.html page, and is responsible for inserting new users in the database
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -423,6 +433,7 @@ def register():
         return render_template("register.html")
 
 
+# This route manages forgot.html and is not yet implemented, but it will send user email with password, if forgotten
 @app.route("/forgot", methods=["GET", "POST"])
 def forgot():
     if request.method == "POST":
@@ -430,11 +441,7 @@ def forgot():
     else:
         return render_template("forgot.html")
 
-
+# This route manages settings.html page and is not yet implemented. It will allow users to change password and delete account and all data.
 @app.route("/settings", methods=["GET"])
 def settings():
     return message("sorry, functionality not implemented yet")
-
-
-if __name__ == '__app__':
-    app.run(debug=False, port=os.getenv("PORT", default=5000))
